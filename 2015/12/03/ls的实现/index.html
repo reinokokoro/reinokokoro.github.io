@@ -12,14 +12,15 @@
 使用的头文件包括dirent.h, sys/stat.h, sys/types.h, unistd.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux作业——用C实现terminal中ls操作">
-<meta property="og:url" content="http://yoursite.com/2015/11/30/ls的实现/index.html">
+<meta property="og:url" content="http://yoursite.com/2015/12/03/ls的实现/index.html">
 <meta property="og:site_name" content="Re:I">
 <meta property="og:description" content="只是单单实现了文件名称，大小（字节）以及最后一次修改的时间的现实。以每行一个文件的形式输出
 题目要求
 写一个类似ls命令的C语言程序，命名为myls-学号.c。编译后命名为myls-学号
 命令完成功能为：显示当前文件夹下所有的文件（目录），一行一个文件，包括信息：文件名、文件大小、文件的创建时间。
 使用的头文件包括dirent.h, sys/stat.h, sys/types.h, unistd.">
-<meta property="og:updated_time" content="2015-11-30T06:02:40.000Z">
+<meta property="og:image" content="http://i12.tietuku.com/82ddbad22e720447.jpg">
+<meta property="og:updated_time" content="2015-12-03T06:20:06.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux作业——用C实现terminal中ls操作">
 <meta name="twitter:description" content="只是单单实现了文件名称，大小（字节）以及最后一次修改的时间的现实。以每行一个文件的形式输出
@@ -192,8 +193,8 @@
       <div class="body-wrap"><article id="post-ls的实现" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2015/11/30/ls的实现/" class="article-date">
-  	<time datetime="2015-11-30T06:02:40.000Z" itemprop="datePublished">2015-11-30</time>
+      <a href="/2015/12/03/ls的实现/" class="article-date">
+  	<time datetime="2015-12-03T06:20:06.000Z" itemprop="datePublished">2015-12-03</time>
 </a>
     </div>
   
@@ -230,6 +231,7 @@
 <li>如果很好的完成如上功能，会给8分；如果可以额外完成其他功能，会酌情奖励分数，最高10分。</li>
 </ul>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;dirent.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;time.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">do_ls</span><span class="params">(<span class="keyword">char</span> *dirName)</span></span>;	</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">do_stat</span><span class="params">(<span class="keyword">char</span> *fileName)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show_info</span><span class="params">(<span class="keyword">char</span> *fileName, <span class="keyword">struct</span> stat *info_p)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	do_ls( <span class="string">"."</span> );</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">do_ls</span><span class="params">(<span class="keyword">char</span> *dirName)</span></span>&#123;</span><br><span class="line">	DIR *dir;</span><br><span class="line">	<span class="keyword">struct</span> dirent *dirent_p;</span><br><span class="line">	<span class="keyword">if</span>((dir = opendir(dirName)) == <span class="literal">NULL</span> )&#123;</span><br><span class="line">		<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>,<span class="string">"cannot open %s.\n"</span>, dirName);</span><br><span class="line">		do_stat(dirName);</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">while</span>((dirent_p = readdir(dir)) != <span class="literal">NULL</span>)&#123;</span><br><span class="line">		do_stat(dirent_p-&gt;d_name);</span><br><span class="line">		&#125;</span><br><span class="line">		closedir(dir);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">do_stat</span><span class="params">(<span class="keyword">char</span> *fileName)</span></span>&#123;</span><br><span class="line">	<span class="keyword">struct</span> stat info;</span><br><span class="line">	<span class="keyword">if</span>(stat(fileName, &amp;info) == -<span class="number">1</span>)&#123;</span><br><span class="line">		perror(fileName);</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		show_info(fileName, &amp;info);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show_info</span><span class="params">(<span class="keyword">char</span> *fileName, <span class="keyword">struct</span> stat *info_p)</span></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%-18s"</span> , fileName);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%8ldB "</span> , (<span class="keyword">long</span>)info_p-&gt;st_size);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"  %18s"</span>, ctime(&amp;info_p-&gt;st_mtime));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实现后的界面如下：<br><img src="http://i12.tietuku.com/82ddbad22e720447.jpg" alt=""></p>
 
       
     </div>
@@ -270,7 +272,7 @@
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="ls的实现" data-title="Linux作业——用C实现terminal中ls操作" data-url="http://yoursite.com/2015/11/30/ls的实现/"></div>
+	<div class="ds-thread" data-thread-key="ls的实现" data-title="Linux作业——用C实现terminal中ls操作" data-url="http://yoursite.com/2015/12/03/ls的实现/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
