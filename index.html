@@ -182,7 +182,7 @@
   
     <div class="article-meta">
       <a href="/2016/01/04/shell script作业/" class="article-date">
-  	<time datetime="2016-01-03T16:28:49.000Z" itemprop="datePublished">2016-01-04</time>
+  	<time datetime="2016-01-03T16:31:26.000Z" itemprop="datePublished">2016-01-04</time>
 </a>
     </div>
   
@@ -209,7 +209,7 @@
 <li>不断循环，每次从键盘读入一个正整数（1-7位），将每一位加起来，输出到屏幕上（直到键盘输入结束ctrl+d退出循环）</li>
 <li>如输入123，输出6；输入2317，输出13。</li>
 </ul>
-<figure class="highlight"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash&#10;while(true)&#10;read n &#10;do &#10;&#9;if [[ $n -ge 0 &#38;&#38; $n -lt 10000000 ]]; then&#10;&#9;&#9;len=$(echo $n | wc -c)&#10;&#9;&#9;sum=0&#10;&#9;&#9;for ((i=1; i&#60;$len; i++))&#10;&#9;&#9;do&#10;&#9;&#9;&#9;sum=$(($sum+$(echo $n | cut -c $i)))&#10;&#9;&#9;done&#10;&#9;&#9;echo &#34;$sum&#34;&#10;&#9;else&#10;&#9;&#9;echo &#34;&#38750;1-7&#20301;&#27491;&#25972;&#25968;&#34;&#10;&#9;fi&#10;done</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="shebang">#!/bin/bash</span></span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>)</span><br><span class="line"><span class="built_in">read</span> n </span><br><span class="line"><span class="keyword">do</span> </span><br><span class="line">	<span class="keyword">if</span> [[ <span class="variable">$n</span> -ge <span class="number">0</span> &amp;&amp; <span class="variable">$n</span> <span class="operator">-lt</span> <span class="number">10000000</span> ]]; <span class="keyword">then</span></span><br><span class="line">		len=$(<span class="built_in">echo</span> <span class="variable">$n</span> | wc -c)</span><br><span class="line">		sum=<span class="number">0</span></span><br><span class="line">		<span class="keyword">for</span> ((i=<span class="number">1</span>; i&lt;<span class="variable">$len</span>; i++))</span><br><span class="line">		<span class="keyword">do</span></span><br><span class="line">			sum=$((<span class="variable">$sum</span>+$(<span class="built_in">echo</span> <span class="variable">$n</span> | cut -c <span class="variable">$i</span>)))</span><br><span class="line">		<span class="keyword">done</span></span><br><span class="line">		<span class="built_in">echo</span> <span class="string">"<span class="variable">$sum</span>"</span></span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="built_in">echo</span> <span class="string">"非1-7位正整数"</span></span><br><span class="line">	<span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
 
       
     </div>
