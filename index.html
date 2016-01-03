@@ -181,8 +181,8 @@
     <article id="post-shell script作业" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2015/12/14/shell script作业/" class="article-date">
-  	<time datetime="2015-12-14T06:42:21.000Z" itemprop="datePublished">2015-12-14</time>
+      <a href="/2016/01/04/shell script作业/" class="article-date">
+  	<time datetime="2016-01-03T16:28:49.000Z" itemprop="datePublished">2016-01-04</time>
 </a>
     </div>
   
@@ -195,7 +195,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2015/12/14/shell script作业/">shell script作业</a>
+      <a class="article-title" href="/2016/01/04/shell script作业/">shell script作业</a>
     </h1>
   
 
@@ -209,6 +209,7 @@
 <li>不断循环，每次从键盘读入一个正整数（1-7位），将每一位加起来，输出到屏幕上（直到键盘输入结束ctrl+d退出循环）</li>
 <li>如输入123，输出6；输入2317，输出13。</li>
 </ul>
+<figure class="highlight"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash&#10;while(true)&#10;read n &#10;do &#10;&#9;if [[ $n -ge 0 &#38;&#38; $n -lt 10000000 ]]; then&#10;&#9;&#9;len=$(echo $n | wc -c)&#10;&#9;&#9;sum=0&#10;&#9;&#9;for ((i=1; i&#60;$len; i++))&#10;&#9;&#9;do&#10;&#9;&#9;&#9;sum=$(($sum+$(echo $n | cut -c $i)))&#10;&#9;&#9;done&#10;&#9;&#9;echo &#34;$sum&#34;&#10;&#9;else&#10;&#9;&#9;echo &#34;&#38750;1-7&#20301;&#27491;&#25972;&#25968;&#34;&#10;&#9;fi&#10;done</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -660,7 +661,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2015 AJIMUReika
+    		&copy; 2016 AJIMUReika
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
